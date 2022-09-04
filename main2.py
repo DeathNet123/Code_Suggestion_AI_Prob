@@ -6,7 +6,9 @@ import nltk
 import random
 import os
 import sys
-import sctokenizer
+import io
+# import sctokenizer
+import tokenize
 # nltk.download('reuters')
 # nltk.download('punkt')
 directory = sys.argv[1] + "/"
@@ -18,12 +20,12 @@ def tri_gram(tok):
     for filename in os.listdir(directory):
         fhand = open(directory + filename, "r")
         # Count frequency of co-occurance  
-        for statement in fhand:
-            if(statement.startswith("//")):
-                continue
-            tokens = nltk.word_tokenize(statement)
-            for w1, w2, w3 in trigrams(tokens, pad_left = True, pad_right= True):
-                model_3[(w1, w2)][w3] += 1
+        py_tokens = tokenize.generate_tokens(fhand.readline)
+        tokens = []
+        for token in py_tokens:
+            tokens.append(token.string)
+        for w1, w2, w3 in trigrams(tokens, pad_left = True, pad_right= True):
+            model_3[(w1, w2)][w3] += 1
         fhand.close()
         # Let's transform the counts to probabilities
     for w1_w2 in model_3:
@@ -36,12 +38,12 @@ def tetra_gram(tok):
     for filename in os.listdir(directory):
         fhand = open(directory + filename, "r")
         # Count frequency of co-occurance  
-        for statement in fhand:
-            if(statement.startswith("//")):
-                continue
-            tokens = nltk.word_tokenize(statement)
-            for w1, w2, w3, w4 in ngrams(tokens, 4, pad_left = True, pad_right= True):
-                model_4[(w1, w2, w3)][w4] += 1
+        py_tokens = tokenize.generate_tokens(fhand.readline)
+        tokens = []
+        for token in py_tokens:
+            tokens.append(token.string)    
+        for w1, w2, w3, w4 in ngrams(tokens, 4, pad_left = True, pad_right= True):
+            model_4[(w1, w2, w3)][w4] += 1
         fhand.close()
         # Let's transform the counts to probabilities
     for w1_w3 in model_4:
@@ -54,12 +56,12 @@ def penta_gram(tok):
     for filename in os.listdir(directory):
         fhand = open(directory + filename, "r")
         # Count frequency of co-occurance  
-        for statement in fhand:
-            if(statement.startswith("//")):
-                continue
-            tokens = nltk.word_tokenize(statement)
-            for w1, w2, w3, w4, w5 in ngrams(tokens, 5, pad_left = True, pad_right= True):
-                model_5[(w1, w2, w3, w4)][w5] += 1
+        py_tokens = tokenize.generate_tokens(fhand.readline)
+        tokens = []
+        for token in py_tokens:
+            tokens.append(token.string)
+        for w1, w2, w3, w4, w5 in ngrams(tokens, 5, pad_left = True, pad_right= True):
+            model_5[(w1, w2, w3, w4)][w5] += 1
         fhand.close()
         # Let's transform the counts to probabilities
     for w1_w4 in model_5:
@@ -72,12 +74,12 @@ def hex_gram(tok):
     for filename in os.listdir(directory):
         fhand = open(directory + filename, "r")
         # Count frequency of co-occurance  
-        for statement in fhand:
-            if(statement.startswith("//")):
-                continue
-            tokens = nltk.word_tokenize(statement)
-            for w1, w2, w3, w4, w5, w6 in ngrams(tokens, 6, pad_left = True, pad_right = True):
-                model_6[(w1, w2, w3, w4, w5)][w6] += 1
+        py_tokens = tokenize.generate_tokens(fhand.readline)
+        tokens = []
+        for token in py_tokens:
+            tokens.append(token.string)
+        for w1, w2, w3, w4, w5, w6 in ngrams(tokens, 6, pad_left = True, pad_right = True):
+            model_6[(w1, w2, w3, w4, w5)][w6] += 1
         fhand.close()
         # Let's transform the counts to probabilities
     for w1_w5 in model_6:
@@ -104,27 +106,27 @@ def prediction(tokens, model, n):
     print (' '.join([t for t in text if t]))
 
 statement = input("Enter the statement to complete : ")
-
-tokens = nltk.word_tokenize(statement)
+statement = io.StringIO(statement)
+py_tokens = tokenize.generate_tokens(statement.readline)
+tokens = []
+for token in py_tokens:
+    tokens.append(token.string)
+print(tokens)
 n = len(tokens)
 match n:
     case 2:
-        for idx in range(0, 3):
-            tri_gram(tokens)
+        tri_gram(tokens)
     case 3:
         tri_gram(tokens[-2:]) 
-        for idx in range(0, 3):
-            tetra_gram(tokens)
+        tetra_gram(tokens)
     case 4:
         tri_gram(tokens[-2:])
         tetra_gram(tokens[-3:])
-        for idx in range(0, 3):
-            penta_gram(tokens)
+        penta_gram(tokens)
     case 5:
         tri_gram(tokens[-2:])
         tetra_gram(tokens[-3:])
         penta_gram(tokens[-4:])
-        for idx in range(0, 3):
-            hex_gram(tokens)
+        hex_gram(tokens)
     case _:
         print("Not Supported yet")

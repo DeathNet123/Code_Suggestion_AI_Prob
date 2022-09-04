@@ -109,22 +109,18 @@ tokens = nltk.word_tokenize(statement)
 n = len(tokens)
 match n:
     case 2:
-        for idx in range(0, 3):
-            tri_gram(tokens)
+        tri_gram(tokens)
     case 3:
         tri_gram(tokens[-2:]) 
-        for idx in range(0, 3):
-            tetra_gram(tokens)
+        tetra_gram(tokens)
     case 4:
         tri_gram(tokens[-2:])
         tetra_gram(tokens[-3:])
-        for idx in range(0, 3):
-            penta_gram(tokens)
+        penta_gram(tokens)
     case 5:
         tri_gram(tokens[-2:])
         tetra_gram(tokens[-3:])
         penta_gram(tokens[-4:])
-        for idx in range(0, 3):
-            hex_gram(tokens)
+        hex_gram(tokens)
     case _:
         print("Not Supported yet")
