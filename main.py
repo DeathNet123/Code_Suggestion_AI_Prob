@@ -15,8 +15,8 @@ model_4 = defaultdict(lambda: defaultdict(lambda: 0))
 model_5 = defaultdict(lambda: defaultdict(lambda: 0))
 model_6 = defaultdict(lambda: defaultdict(lambda: 0))
 def tri_gram(tok): 
-    for filename in os.listdir("./clean_data"):
-        fhand = open("./clean_data/" + filename, "r")
+    for filename in os.listdir("./data"):
+        fhand = open("./data/" + filename, "r")
         # Count frequency of co-occurance  
         for statement in fhand:
             if(statement.startswith("//")):
@@ -33,8 +33,8 @@ def tri_gram(tok):
     prediction(tok, model_3, 2)
 
 def tetra_gram(tok): 
-    for filename in os.listdir("./clean_data"):
-        fhand = open("./clean_data/" + filename, "r")
+    for filename in os.listdir("./data"):
+        fhand = open("./data/" + filename, "r")
         # Count frequency of co-occurance  
         for statement in fhand:
             if(statement.startswith("//")):
@@ -51,8 +51,8 @@ def tetra_gram(tok):
     prediction(tok, model_4, 3)
 
 def penta_gram(tok): 
-    for filename in os.listdir("./clean_data"):
-        fhand = open("./clean_data/" + filename, "r")
+    for filename in os.listdir("./data"):
+        fhand = open("./data/" + filename, "r")
         # Count frequency of co-occurance  
         for statement in fhand:
             if(statement.startswith("//")):
@@ -69,8 +69,8 @@ def penta_gram(tok):
     prediction(tok, model_5, 4)
 
 def hex_gram(tok):
-    for filename in os.listdir("./clean_data"):
-        fhand = open("./clean_data/" + filename, "r")
+    for filename in os.listdir("./data"):
+        fhand = open("./data/" + filename, "r")
         # Count frequency of co-occurance  
         for statement in fhand:
             if(statement.startswith("//")):
